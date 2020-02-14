@@ -15,7 +15,7 @@ end)
 
 
 function SCRG.CheckArgs( ply, args )
-	
+
 	if !ply:IsSuperAdmin() then
 		return
 	end
@@ -68,10 +68,10 @@ concommand.Add("screengrab_player", function( ply, cmd, args )
 end)
 
 net.Receive("screengrab_start", function( x, ply )
-	-- Readying the transfer 
+	-- Readying the transfer
 	if !IsValid( ply ) then
 		print("player isnt valid")
-		return 
+		return
 	end
 	MsgN("Starting screencap on "..ply:Name())
 	local numparts = net.ReadUInt( 32 )
@@ -100,7 +100,7 @@ net.Receive("screengrab_part", function( x, ply )
 	if !IsValid( ply ) then return end
 	if !IsValid( ply.SG.INIT ) then return end
 	if ply.SG.LEN == 0 then return end
-	
+
 	local len = net.ReadUInt( 32 )
 	local data = net.ReadData( len )
 
@@ -110,7 +110,7 @@ net.Receive("screengrab_part", function( x, ply )
 		net.WriteData( data, len )
 	net.Send( ply.SG.INIT )
 
-	ply.SG.COUNT = ply.SG.COUNT + 1 
+	ply.SG.COUNT = ply.SG.COUNT + 1
 	if ply.SG.COUNT == ply.SG.LEN then
 		MsgN("Finished SG")
 		ply.SG = nil

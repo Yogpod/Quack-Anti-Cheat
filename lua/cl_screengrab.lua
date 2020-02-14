@@ -20,7 +20,7 @@ function SCRG.ShowSC( data, ply )
 		surface.SetDrawColor( Color(30,30,30,255) )
 		surface.DrawRect( 0, 0, 1600, 900 )
 	end
-	
+
 	local image = vgui.Create("HTML", frmSG )
 	if isDecentRes then
 		image:SetSize( 1488, 837 )
@@ -48,7 +48,7 @@ net.Receive("screengrab_fwd", function()
 
 	if !ply:IsValid() then print("ply not val"); return end
 	if ply.SG == nil then print("sg nil"); return end
-	
+
 	ply.SG.PARTS[ #ply.SG.PARTS + 1 ] = util.Decompress( data )
 	if #ply.SG.PARTS == ply.SG.LEN then
 		chat.AddText( Color(0,200,0), "[SG] Screengrab finished for "..ply:Name() )
@@ -97,7 +97,7 @@ net.Receive( "screengrab_part", function()
 
 	local len = string.len( nextsend )
 	nextsend = util.Compress( nextsend )
-	
+
 	net.Start( "screengrab_part")
 		net.WriteUInt( len, 32 )
 		net.WriteData( nextsend, len )

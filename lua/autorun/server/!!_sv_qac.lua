@@ -1,4 +1,4 @@
---[[ 
+--[[
 
 Hi, This is Zero The Fallen
 This is QAC (aka Quack Anti Cheat)
@@ -8,9 +8,9 @@ Thanks
 
 Whats new:
 =========
-3/4/2014 
+3/4/2014
 
-Hi, QAC 
+Hi, QAC
 --]]
 
 
@@ -49,7 +49,7 @@ local alt_ban = false
 if (UseAltSB) or (serverguard) or (UseSourceBans) then
 	alt_ban = true
 end
-	
+
 ----------
 -- Misc --
 ----------
@@ -81,13 +81,13 @@ end
 local function LogBan(p, r)
 		local qacrnb = "Detected " .. p:Name() .. " for " .. r .. "(" .. p:SteamID() .. ") \n"
 		print(qacrnb)
-		file.Append("QAC Log.txt", qacrnb)	
+		file.Append("QAC Log.txt", qacrnb)
 end
-	
+
 local function BanSystem(p, r)
 
 	if GetConVarString("sv_allowcslua") != "0" then return end
-	
+
 	if (ulx) && !(alt_ban) then
 		ulx.ban( "nil", p, time, r )
 	elseif (ulx) && (UseAltSB) then
@@ -123,7 +123,7 @@ end
 
 local function Ban(p, r)
 	hook.Call("QACBan", GAMEMODE, p, r)
-	
+
 	LogBan(p, r)
 	if (banned[p:SteamID()]) then
 		return
@@ -131,7 +131,7 @@ local function Ban(p, r)
 	if !(RepeatBan) then
 		banned[p:SteamID()] = true
 	end
-	
+
 	PlaySounds()
 	if (BanWhenDetected) then
 		BanSystem(p, r)
@@ -151,17 +151,17 @@ net.Receive(
 	function(l, p)
 		local s = net.ReadString()
 		local crc = net.ReadString()
-		
+
 		local sr = scans[s]
 		local br = "Detected foreign source file " .. s .. "."
-		
-		
+
+
 		// Testing of CRC. Oddly, doesnt work. Maybe im dumb
 		// local l_crc = util.CRC(file.Read(s, "game") or nil)
 		// if (l_crc != crc) then
 		//	file.Append("qac_crc_debug.txt", "client file " .. s .." crc ".. crc .. " does not seem to match server " .. s .. " s crc: " .. l_crc .. "\n")
 		// end
-		
+
 		if (sr != nil) then
 			if (sr) then
 				return
@@ -169,13 +169,13 @@ net.Receive(
 				Ban(p, br)
 			end
 		end
-		
+
 		if (file.Exists(s, "game")) then
 			scans[s] = true
 		else
 			scans[s] = false
 			Ban(p, br)
-		end	
+		end
 	end
 )
 
@@ -241,28 +241,28 @@ net.Receive(
 -----------------
 -- Ping system V2 --
 -----------------
-	
+
 local players = {}
-	
+
 hook.Add("PlayerInitialSpawn", "AddPlayer", function(ply)
 	table.insert(players, ply)
 end)
-	
+
 hook.Add("PlayerDisconnected", "RemovePlayer", function(ply)
 	table.RemoveByValue(players, ply)
 end)
 
-local CoNum = 2 
+local CoNum = 2
 timer.Create("STC",10,0, function()
 	for k, v in pairs(players) do
 		net.Start("Ping2")
 		net.WriteInt(CoNum, 10)
 		net.Send(v)
-		
-		if (!v.Pings) then 
+
+		if (!v.Pings) then
 			v.Pings = 0
 		end
-		
+
 		if (KickForPings) then
 			if (v.Pings > MaxPings && !v:IsBot()) then
 				//v:Kick("Did not return ping")
@@ -273,7 +273,7 @@ timer.Create("STC",10,0, function()
 		v.Pings = v.Pings + 1
 	end
 end)
-		
+
 net.Receive("Ping1", function(len, ply)
 	local HNum = net.ReadInt(16)
 	if (HNum) && HNum == CoNum  then
@@ -296,7 +296,7 @@ if number = data number then
 
 print success
 
-else  
+else
 
 print ur late
 
